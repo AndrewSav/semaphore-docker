@@ -40,7 +40,7 @@ RUN apk add --no-cache sshpass git curl ansible openssh-client tini && \
     chown -R semaphore:semaphore /usr/local/bin/semaphore
 
 WORKDIR /home/semaphore
-COPY entrypoint.py .
+COPY --chown=semaphore:semaphore entrypoint.py .
 
 USER $USER_UID
 
