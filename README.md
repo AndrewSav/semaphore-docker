@@ -58,3 +58,4 @@ It also can be build via GitHub actions.
 - this build uses more up to date (as of the time of writing) alpine images
 - this image by default no longer runs under user that belongs to the `root` group
 - a few dependencies have been removed because it was not clear where they are used
+- it does not dump admin password to stdout
