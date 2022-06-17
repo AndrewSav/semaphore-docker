@@ -1,0 +1,25 @@
+name: Check latest Semaphore version
+
+on:
+  schedule:
+    - cron: '51 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  version_check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.2
+        with:
+          token: ${{ secrets.PAT }}
+      - name: Get the latest version of Semaphore
+        run: |
+          curl -s https://api.github.com/repos/ansible-semaphore/semaphore/releases/latest |\
+            jq -r ".tag_name" > version
+          export SEMAPHORE_VERSION=$(cat version)
+          echo "SEMAPHORE_VERSION=$SEMAPHORE_VERSION" >> $GITHUB_ENV
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v9.0.0
+        with:
+          message: 'Automated version update to: ${{ env.SEMAPHORE_VERSION }}'

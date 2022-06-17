@@ -1,0 +1,55 @@
+services:
+  #mysql:
+  #  restart: unless-stopped
+  #  image: mysql:5.6
+  #  container_name: semaphore_mysql
+  #  hostname: mysql
+  #  environment:
+  #    MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+  #    MYSQL_DATABASE: semaphore
+  #    MYSQL_USER: semaphore
+  #    MYSQL_PASSWORD: changeme
+  #  healthcheck:
+  #    test: ["CMD-SHELL", "mysqladmin ping --silent"]
+  #    interval: 5s
+  #    timeout: 5s
+  #    retries: 5
+  #  volumes:
+  #  - ./mysql:/var/lib/mysql
+  postgres:
+    restart: unless-stopped
+    image: postgres:14.3
+    container_name: semaphore_postgres
+    hostname: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_PASSWORD=changeme
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./postgres:/var/lib/postgresql/data
+  semaphore:
+    ports:
+      - 80:3000
+    image: andrewsav/semaphore:v2.8.53
+    container_name: semaphore
+    restart: unless-stopped
+    #command: ["sh","-c","sleep 999999"]
+    environment:
+      SEMAPHORE_ADMIN_PASSWORD: changemetoo
+      SEMAPHORE_ADMIN_NAME: admin
+      SEMAPHORE_ADMIN_EMAIL: admin@localhost
+      SEMAPHORE_ADMIN: admin
+    volumes:
+      - type: bind
+        source: ./config.json
+        target: /home/semaphore/config.json
+    depends_on:
+    #  mysql:
+    #    condition: service_healthy
+      postgres:
+        condition: service_healthy
