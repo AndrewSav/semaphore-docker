@@ -28,7 +28,7 @@ semaphore user list
 
 Note that if you are using `semaphore setup` the generated config will be written inside the container, so you will have to map the directory you are writing it to, or use `docker cp` command to get the result out. Also node that the `/home/semaphore/config.json` may be in use and not writable, if the Semaphore server is running.
 
-For troubleshooting purposes, if your container stops to quick and you do not have time to exec into it uncoment the following line in `docker-compose.yaml`:
+For troubleshooting purposes, if your container stops too quickly and you do not have time to exec into it uncoment the following line in `docker-compose.yaml`:
 
 ```
 #command: ["sh","-c","sleep 999999"]
@@ -46,13 +46,13 @@ docker build -t andrewsav/semaphore:v2.8.53 --build-arg SEMAPHORE_VERSION=v2.8.5
 
 Substitute `v2.8.53` above with the git commit hash, branch or tag name from the [ansible-semaphore/semaphore](https://github.com/ansible-semaphore/semaphore) repository. 
 
-It also can be build via GitHub actions.
+It also can be build via GitHub actions. Create a PAT with the repo permission [here](https://github.com/settings/tokens>), then enter the PAT value and docker credentials [here](https://github.com/BarfootThompson/semaphore-docker/settings/secrets/actions) as `DOCKERHUB_TOKEN`, `DOCKERHUB_USERNAME` and `PAT`
 
 ## Differences from the official image
 
 - `config.json` is not regenerated on each container start, instead it is mapped from host
 - most of the configuration is provided via `config.json`, not via environment variables. This makes _all_ configuration options available, not just those that are exposed by the official image
-- `semaphore setup` is not run on startup since we already have a working `config.json configuration
+- `semaphore setup` is not run on startup since we already have a working `config.json` configuration
 - this build has to use `git clone` to get the sources since it is not in the official repository
 - this build uses an official nodejs image for building the frontend (the official image does `apk add node npm` instead)
 - this build uses more up to date (as of the time of writing) alpine images
