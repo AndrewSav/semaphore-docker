@@ -1,4 +1,4 @@
-FROM node:14.19.3-alpine3.15 as frontend
+FROM node:18.10.0-alpine3.15 as frontend
 
 ARG SEMAPHORE_VERSION="develop"
 
