@@ -1,4 +1,4 @@
-FROM node:18.10.0-alpine3.15 as frontend
+FROM node:18.12.0-alpine3.15 as frontend
 
 ARG SEMAPHORE_VERSION="develop"
 
@@ -12,7 +12,7 @@ RUN apk add --no-cache curl git && \
   task deps:fe2 && \ 
   task compile:fe2
 
-FROM golang:1.18.3-alpine3.15 as backend
+FROM golang:1.19.2-alpine3.15 as backend
 
 WORKDIR /semaphore
 
