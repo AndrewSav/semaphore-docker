@@ -23,7 +23,7 @@ RUN apk add --no-cache curl git && \
   task deps:tools && \
   task deps:be && \
   task compile:be && \
-  task build:local
+  task build:local GOOS= GOARCH=
 
 FROM alpine:3.15 as runtime
 
