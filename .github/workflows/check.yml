@@ -11,11 +11,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.1.0
-        with:
-          token: ${{ secrets.PAT }}
+        #with:
+        #  token: ${{ secrets.PAT }}
       - name: Get the latest version of Semaphore
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -s https://api.github.com/repos/ansible-semaphore/semaphore/releases/latest | tee json
+          curl -s --header "Authorization: Bearer $GH_TOKEN" https://api.github.com/repos/ansible-semaphore/semaphore/releases/latest | tee json
           cat json | jq -r ".tag_name" > version
           export SEMAPHORE_VERSION=$(cat version)
           echo "SEMAPHORE_VERSION=$SEMAPHORE_VERSION" >> $GITHUB_ENV
