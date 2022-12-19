@@ -15,8 +15,8 @@ jobs:
           token: ${{ secrets.PAT }}
       - name: Get the latest version of Semaphore
         run: |
-          curl -s https://api.github.com/repos/ansible-semaphore/semaphore/releases/latest |\
-            jq -r ".tag_name" > version
+          curl -s https://api.github.com/repos/ansible-semaphore/semaphore/releases/latest | tee json
+          cat json | jq -r ".tag_name" > version
           export SEMAPHORE_VERSION=$(cat version)
           echo "SEMAPHORE_VERSION=$SEMAPHORE_VERSION" >> $GITHUB_ENV
       - name: Add & Commit
