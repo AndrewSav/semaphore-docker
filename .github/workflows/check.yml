@@ -21,6 +21,7 @@ jobs:
           cat json | jq -r ".tag_name" > version
           export SEMAPHORE_VERSION=$(cat version)
           echo "SEMAPHORE_VERSION=$SEMAPHORE_VERSION" >> $GITHUB_ENV
+          rm json
       - name: Add & Commit
         uses: EndBug/add-and-commit@v9.1.1
         with:
