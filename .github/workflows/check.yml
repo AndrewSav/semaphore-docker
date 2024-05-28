@@ -7,22 +7,22 @@ on:
 
 jobs:
   version_check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
       - name: Get the latest version of Semaphore
         env:
           GH_TOKEN: ${{ secrets.PAT }}
         run: |
-          curl -s --header "Authorization: Bearer $GH_TOKEN" https://api.github.com/repos/ansible-semaphore/semaphore/releases/latest | tee json
-          cat json | jq -r ".tag_name" > version
+          curl -sLH "Authorization: Bearer $GH_TOKEN" https://api.github.com/repos/semaphoreui/semaphore/releases | tee json
+          cat json | jq -r "first | .tag_name" > version
           export SEMAPHORE_VERSION=$(cat version)
           echo "SEMAPHORE_VERSION=$SEMAPHORE_VERSION" >> $GITHUB_ENV
           rm json
       - name: Add & Commit
-        uses: EndBug/add-and-commit@v9.1.1
+        uses: EndBug/add-and-commit@v9.1.4
         with:
           message: 'Automated version update to: ${{ env.SEMAPHORE_VERSION }}'

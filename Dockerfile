@@ -1,4 +1,4 @@
-FROM node:18.12.0-alpine3.15 as frontend
+FROM node:22.2.0-alpine3.20 as frontend
 
 ARG SEMAPHORE_VERSION="develop"
 
@@ -9,10 +9,10 @@ RUN apk add --no-cache curl git && \
   git config --add advice.detachedHead false && \
   git checkout "${SEMAPHORE_VERSION}" && \
   sh -c "$(curl -sSL https://taskfile.dev/install.sh)" -- -b /usr/local/bin && \
-  task deps:fe2 && \ 
-  task compile:fe2
+  task deps:fe && \
+  task build:fe
 
-FROM golang:1.19.2-alpine3.15 as backend
+FROM golang:1.22.3-alpine3.20 as backend
 
 WORKDIR /semaphore
 
@@ -22,10 +22,9 @@ COPY --from=frontend /usr/local/bin/task /usr/local/bin/task
 RUN apk add --no-cache curl git && \
   task deps:tools && \
   task deps:be && \
-  task compile:be && \
-  task build:local GOOS= GOARCH=
+  task build:be GOOS= GOARCH=
 
-FROM alpine:3.15 as runtime
+FROM alpine:3.20 as runtime
 
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID

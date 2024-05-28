@@ -18,7 +18,7 @@ services:
   #  - ./mysql:/var/lib/mysql
   postgres:
     restart: unless-stopped
-    image: postgres:14.3
+    image: postgres:16.3
     container_name: semaphore_postgres
     hostname: postgres
     healthcheck:
@@ -35,7 +35,7 @@ services:
   semaphore:
     ports:
       - 80:3000
-    image: andrewsav/semaphore:v2.8.53
+    image: andrewsav/semaphore:v2.9.109
     container_name: semaphore
     restart: unless-stopped
     #command: ["sh","-c","sleep 999999"]

@@ -41,10 +41,10 @@ This will prevent Semaphore server from starting, but you will be able to exec i
 Build it like this:
 
 ```
-docker build -t andrewsav/semaphore:v2.8.53 --build-arg SEMAPHORE_VERSION=v2.8.53 .
+docker build -t andrewsav/semaphore:v2.9.109 --build-arg SEMAPHORE_VERSION=v2.9.109 .
 ```
 
-Substitute `v2.8.53` above with the git commit hash, branch or tag name from the [ansible-semaphore/semaphore](https://github.com/ansible-semaphore/semaphore) repository. 
+Substitute `v2.9.109` above with the git commit hash, branch or tag name from the [ansible-semaphore/semaphore](https://github.com/ansible-semaphore/semaphore) repository.
 
 It also can be build via GitHub actions. Create a PAT with the repo permission [here](https://github.com/settings/tokens>), then enter the PAT value and docker credentials [here](https://github.com/BarfootThompson/semaphore-docker/settings/secrets/actions) as `DOCKERHUB_TOKEN`, `DOCKERHUB_USERNAME` and `PAT`
 
